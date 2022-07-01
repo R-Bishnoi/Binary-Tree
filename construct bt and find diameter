@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+struct node{
+    int data;
+    struct node *left;
+    struct node *right;
+    
+};
+int ans=0;
+
+int dia(struct node *root)
+{
+    if(root==NULL)return 0;
+    
+    int l=dia(root->left);
+    int r=dia(root->right);
+    ans=max(ans,l+r+1);
+    
+    return max(l,r)+1;
+}
+int main()
+{
+    
+  unordered_map<int,struct node*>mp;  
+int n;
+cin>>n;
+int r;
+cin>>r;
+//struct node root=(struct node)malloc(sizeof(struct node));
+//root->data=r;
+struct node *root;
+n=n-1;
+while(n--)
+{
+    int a,b;
+    char c;
+    cin>>a>>c>>b;
+    
+    struct node *a1;
+    if(mp.find(a)!=mp.end())
+    {
+       a1=mp[a]; 
+    }
+    else{
+    a1=(struct node*)malloc(sizeof(struct node));
+      a1->data=a;
+      mp[a]=a1;
+    
+    }
+    struct node *b1;
+    if(mp.find(b)!=mp.end()){
+        b1=mp[b];
+        
+    }
+    else{
+   b1 =(struct node*)malloc(sizeof(struct node));
+    
+    b1->data=b;
+    mp[b]=b1;
+    }
+    if(a1->data==r)root=a1;
+    if(b1->data==r)root=b1;
+    if(c=='R')
+    a1->right=b1;
+    else if(c=='L')
+    a1->left=b1;
+    
+    
+    
+}
+
+int c2=dia(root);
+cout<<c2;
+    return 0;
+}
