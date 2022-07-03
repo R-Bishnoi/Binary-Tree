@@ -103,6 +103,16 @@ void zigzag(node* root ,vector<int>&ans){
 
 //function for left node
 
+//base case
+ /* vector<int>v1;
+    
+    if(root==NULL)return v1;
+    
+    if(root->left==NULL && root->right==NULL){
+        v1.push_back(root->data);
+        return v1;
+    }*/
+
 void fl(node* root,vector<int>&res){
     //means we cant choose leaf node in left function
     if(root==NULL || (root->left==NULL && root->right==NULL))return;
