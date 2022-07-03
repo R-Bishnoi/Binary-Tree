@@ -1,0 +1,256 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class node{
+    
+    public:
+    
+    int data;
+    struct node* left;
+    struct node* right;
+    
+ node(int val){
+     data=val;
+     left=NULL;
+     right=NULL;
+ }
+};
+
+
+
+//level order traversal
+
+void level(node* root){
+    if(root==NULL)return;
+    
+queue<node*>q;
+
+q.push(root);
+
+while(!q.empty()){
+    node* temp=q.front();
+    q.pop();
+    cout<<temp->data<<" ";
+   if(temp->left)q.push(temp->left);
+   if(temp->right)q.push(temp->right);
+   
+}
+
+}
+
+
+
+//reverse level order 
+
+void r_level(node* root,vector<int>&v){
+    
+    if(root==NULL)return;
+   
+    queue<node*>q;
+    q.push(root);
+    
+while(!q.empty()){
+    node* temp=q.front();
+    q.pop();
+    v.push_back(temp->data);
+    if(temp->right)r_level(root->right,v);
+    if(temp->left)r_level(root->left,v);
+}
+
+}
+
+
+
+//zigzag traversal
+
+void zigzag(node* root ,vector<int>&ans){
+    if(root==NULL)return;
+
+ int l=0;
+ queue<node*>q;
+ q.push(root);
+ 
+ while(!q.empty()){
+   
+   vector<int>v;
+   int n=q.size();
+   
+   for(int i=0;i<n;i++){
+       node* temp=q.front();
+       q.pop();
+       
+       if(l%2!=0)v.push_back(temp->data);
+       else ans.push_back(temp->data);
+       
+      if(temp->left)q.push(temp->left);
+      if(temp->right)q.push(temp->right);
+   }
+   
+   l=l+1;
+   
+   reverse(v.begin(),v.end());
+   for(int j=0;j<v.size();j++)
+      ans.push_back(v[j]);
+   
+ }
+ 
+    
+}
+
+
+
+//boundary traversal
+
+//function for left node
+
+void fl(node* root,vector<int>&res){
+    //means we cant choose leaf node in left function
+    if(root==NULL || (root->left==NULL && root->right==NULL))return;
+    
+    res.push_back(root->data);
+    if(root->left)fl(root->left,res);
+    if(root->right)fl(root->right,res);
+    
+}
+
+
+//function for leaf node
+
+void f_leaf(node* root,vector<int>&res){
+    if(root==NULL)return;
+    
+    if(root->left)f_leaf(root->left,res);
+    if(root->left==NULL && root->right==NULL)res.push_back(root->data);
+    if(root->right)f_leaf(root->right,res);
+    
+}
+
+
+//function for right node]
+
+void fr(node* root,vector<int>&res){
+    //means we cant choose leaf node in left function
+    if(root==NULL || (root->left==NULL && root->right==NULL))return;
+    
+    res.push_back(root->data);
+    if(root->left)fl(root->left,res);
+    if(root->right)fl(root->right,res);
+    
+}
+
+
+
+
+
+//vertical order traversal
+
+void vertical_trav(node *root,vector<vector<int>>&ans1){
+    
+  if(root==NULL)return;
+  
+  //node ,vertical line ,level
+  queue<pair<node* ,pair<int,int>>>q;
+  q.push({root,{0,0}});
+  
+ //taking a map 
+ //vertical line , level , multiset
+ map<int,map<int,multiset<int>>>mp;
+ 
+while(!q.empty()){
+    
+    auto x=q.front();
+    q.pop();
+    node *temp=x.first;
+    int v=x.second.first;
+    int l=x.second.second;
+    
+mp[v][l].insert(temp->data);
+
+if(temp->left)q.push({temp->left,{v-1,l+1}});
+if(temp->right)q.push({temp->right,{v+1,l+1}});
+    
+}
+
+
+//storing res in ans vector
+
+for(auto x:mp){
+    vector<int>v;
+    for(auto y:x.second){
+        v.insert(v.end(),y.second.begin(),y.second.end());
+    }
+    
+    ans1.push_back(v);
+}
+    
+    
+}
+
+
+
+
+int main(){
+    
+  node* root=new node(5);
+  node* a=new node(4);
+  node* b=new node(6);
+  node* c=new node(8);
+  node* d=new node(3);
+  node* e=new node(3);
+   
+   root->left=a;
+   root->right=b;
+   a->left=c;
+   a->right=d;
+   b->left=e;
+   
+  vector<int>v; 
+
+//level order traversal    
+level(root);
+cout<<endl;
+
+//reverse level order traversal
+r_level(root,v);
+reverse(v.begin(),v.end());
+for(int i=0;i<v.size();i++)cout<<v[i]<<" ";
+
+//zigzag traversal
+cout<<endl;
+
+vector<int>ans;
+zigzag(root,ans);
+
+for(int i=0;i<ans.size();i++)cout<<ans[i]<<" ";
+
+cout<<endl;
+
+//boundary traversal
+
+vector<int>res;
+res.push_back(root->data);
+
+fl(root->left,res);
+f_leaf(root,res);
+fr(root->right,res);
+
+
+for(int i=0;i<res.size();i++)cout<<res[i]<<" ";
+
+cout<<endl;
+
+//vertical order traversal
+vector<vector<int>>ans1;
+vertical_trav(root,ans1);
+
+for(int i=0;i<ans1.size();i++){
+    for(int j=0;j<ans1[i].size();j++){
+        cout<<ans1[i][j]<<" ";
+    }
+}
+
+
+
+
+    return 0;
+}
