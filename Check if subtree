@@ -1,0 +1,25 @@
+class Solution{
+  public:
+  
+bool is_same(Node* t,Node* s){
+    if(t==NULL && s==NULL)return true;
+    if(t==NULL || s==NULL)return false;
+    
+    return (t->data==s->data && is_same(t->left,s->left)&&is_same(t->right,s->right));
+}
+
+
+
+ 
+  bool isSubTree(Node* t, Node* s) {
+     if(s==NULL)return true;
+     if(t==NULL)return false;
+  
+
+if(is_same(t,s))return true;
+
+return (isSubTree(t->left,s)||isSubTree(t->right,s));
+
+    }   
+    
+};
