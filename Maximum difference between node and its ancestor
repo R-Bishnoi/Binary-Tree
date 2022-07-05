@@ -1,0 +1,32 @@
+int solve(Node* root,int &mx){
+    
+  if(root==NULL)return INT_MAX;
+  
+  if(root->left==NULL && root->right==NULL)return root->data;
+  
+  int l=solve(root->left,mx);
+  int r=solve(root->right,mx);
+  
+  int mini=min(l,r);
+ 
+ 
+ mx=max(mx,root->data-mini);
+ 
+ return min(mini,root->data);
+    
+}
+
+
+
+
+
+int maxDiff(Node* root){
+    
+ if(root==NULL)return 0;
+ 
+ int mx=INT_MIN;
+ solve(root,mx);
+ 
+ return mx;
+
+}
