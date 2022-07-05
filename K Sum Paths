@@ -1,0 +1,51 @@
+//Given a binary tree and an integer K. Find the number of paths in the tree which have their sum equal to K.
+//A path may start from any node and end at any node in the downward direction.
+
+
+
+
+class Solution {
+public:
+    
+    int mod=1000000007;
+    
+    void solve(TreeNode* root,vector<int>&v,int t,int &count){
+        
+        if(root==NULL)return;
+        
+    v.push_back(root->val);
+        
+    solve(root->left,v,t,count);
+    solve(root->right,v,t,count);
+  
+//now you are extreme bottom for first itreation 
+//if you are getting desire sum = t then don't break loop bcz you may get sum==t again when vector contain -ve element
+    long long int sum=0;
+    for(int i=v.size()-1;i>=0;i--){
+        sum=(sum+v[i])%mod;
+    if(sum==t){
+        count=(count+1)%mod;
+    }
+}
+        
+//backtrack
+        v.pop_back();
+
+        
+    }
+    
+    
+    
+    int pathSum(TreeNode* root, int t) {
+       
+    if(root==NULL)return 0;
+        int count=0;
+    vector<int>v;
+        solve(root,v,t,count);
+        return count%mod;
+        
+        
+    }
+    
+    
+};
