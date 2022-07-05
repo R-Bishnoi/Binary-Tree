@@ -1,0 +1,91 @@
+class Solution{
+private:
+public:
+Node *T;
+
+void make_parent(Node *root,unordered_map<Node*,Node*>&pt,int target){
+    
+    queue<Node*>q;
+    q.push(root);
+    while(!q.empty()){
+        
+        Node* temp=q.front();
+        q.pop();
+          if(temp->data==target) {
+            T=temp;
+        }
+        if(temp->left){
+            pt[temp->left]=temp;
+            q.push(temp->left);
+        }
+            
+        if(temp->right){
+            pt[temp->right]=temp;
+       q.push(temp->right);
+        }
+            
+    }
+    
+}
+
+
+
+    vector <int> KDistanceNodes(Node* root, int target , int k){
+        
+     unordered_map<Node* ,Node*>pt;
+     
+      make_parent(root,pt,target);  
+        
+     unordered_map<Node*,bool>vis;
+     
+    queue<Node*>q;
+    q.push(T);
+    vis[T]=true;
+    
+    int curr_level=0;
+    while(!q.empty()){
+     
+        int n=q.size();
+        if(curr_level==k)break;
+        
+        for(int i=0;i<n;i++){
+              Node* amp=q.front();
+              q.pop();
+              
+              if(amp->left){
+                  if(vis[amp->left]!=true){
+                      q.push(amp->left);
+                  vis[amp->left]=true;}
+              }
+              
+            if(amp->right){
+                  if(vis[amp->right]!=true){q.push(amp->right);
+                  vis[amp->right]=true;}
+              }
+              
+          if(pt[amp]&&vis[pt[amp]]!=true){
+              vis[pt[amp]]=true;
+              q.push(pt[amp]);
+          }    
+              
+        }
+        
+        curr_level++;
+        
+    }
+    
+    
+    vector<int>v;
+    while(!q.empty()){
+        Node *ans=q.front();
+        q.pop();
+        v.push_back(ans->data);
+    }
+        
+     sort(v.begin(),v.end());
+     return v;   
+       
+    }
+};
+
+
