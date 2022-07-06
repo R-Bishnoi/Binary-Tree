@@ -1,0 +1,55 @@
+class Solution{
+    
+    public:
+  
+  void f1(Node* root,int k,int &ce){
+  
+  if(root==NULL)return;
+  
+  if(root->data>=k){
+      ce=root->data;
+       f1(root->left,k,ce);
+  }
+  
+  if(root->data<k){
+       f1(root->right,k,ce);
+  }
+  
+  }
+  
+  
+  
+  void f2(Node* root,int k,int &flo){
+      
+    if(root==NULL)return;
+    
+    if(root->data<=k){
+        flo=root->data;
+        f2(root->right,k,flo);
+    }
+    
+    if(root->data>k){
+        f2(root->left,k,flo);
+    }
+      
+      
+  }
+  
+  
+    int minDiff(Node *root, int k){
+     
+     int ce=-1;
+     f1(root,k,ce);
+     
+     int flo=-1;
+     f2(root,k,flo);
+     
+  ce=abs(ce-k);
+  flo=abs(flo-k);
+     
+ int ans=min(ce,flo);
+      
+    return ans;  
+      
+    }
+};
