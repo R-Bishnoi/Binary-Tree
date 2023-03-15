@@ -1,0 +1,80 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class node{
+    public:
+    int data;
+    int l;
+    int h;
+    
+    node(int d,int low,int high){
+        data=d;
+        l=low;
+        h=high;
+    }
+};
+
+
+bool solve(vector<int>&v){
+    
+    int lp=INT_MIN;
+    int hp=INT_MAX;
+    int n=v.size();
+    
+    int i=0;
+    int d=v[i];
+    queue<node*>q;
+    
+    node* p=new node(d,lp,hp);
+    q.push(p);
+    i++;
+    
+    while(!q.empty()){
+         node *temp=q.front();
+        q.pop();
+        
+     
+        
+        if(i<n&& temp->l < v[i] &&temp->data > v[i]){
+            node* a=new node(v[i],temp->l,temp->data);
+            q.push(a);
+            i++;
+        }
+        
+       if(i<n&& temp->h > v[i] &&temp->data < v[i]){
+            node* b=new node(v[i],temp->data,temp->h);
+            q.push(b);
+            i++;
+        }
+        
+        
+    }
+    
+    return (i ==n );
+}
+
+
+
+
+int main(){
+    int n;
+    cin>>n;
+    
+    vector<int>v;
+    
+for(int i=0;i<n;i++){
+    int a;
+    cin>>a;
+    v.push_back(a);
+}
+
+cout<<v.size()<<endl;
+
+  cout<<solve(v)<<endl;
+    
+
+  
+
+    return 0;
+}
